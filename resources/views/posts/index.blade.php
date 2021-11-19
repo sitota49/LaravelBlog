@@ -14,9 +14,7 @@
                 <div class="card-body">
                     {{ $post->body }}
 
-                    <hr>
-                    <a href="{{ route('posts.edit', $post->id) }}"></a>
-                </div>
+                    </div>
 
             </div>
         @endforeach

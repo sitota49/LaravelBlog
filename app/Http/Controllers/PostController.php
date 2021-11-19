@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
+use App\Models\Category;
 
 class PostController extends Controller
 {
@@ -12,14 +13,25 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $posts = Post::orderBy('created_at')->get();
-
+        
+        $categories = Category::all();
+        if($request->has('q')){
+    		$q=$request->q;
+    		$posts=Post::where('cat_id','like','%'.$q.'%')->orderBy('created_at')->get();
+    	}else{
+    		$posts = Post::orderBy('created_at')->get();
+    	}
+                
         return view('posts.index')->with([
-            'posts' => $posts
+            'posts' => $posts,
+            'categories' => $categories
         ]);
     }
+
+   
+
 
     /**
      * Show the form for creating a new resource.
@@ -28,7 +40,10 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('posts.create');
+        $categories = Category::all();
+        return view('posts.create')->with([
+            'categories' => $categories
+        ]);;
     }
 
     /**
@@ -41,7 +56,8 @@ class PostController extends Controller
     {
         $this->validate($request, [
             'title' => 'required|string',
-            'body' => 'required|string'
+            'body' => 'required|string',
+            'cat_id' => 'required|integer'
         ]);
        
 
@@ -49,6 +65,7 @@ class PostController extends Controller
         $post = new Post;
         $post->title = $request->input('title');
         $post->body = $request->input('body');
+        $post->cat_id =$request->input('cat_id');
         $post->save();
 
         return redirect()->route('posts.index');
@@ -64,8 +81,10 @@ class PostController extends Controller
     {
       
         $post = Post::find($id);
-        return view('posts.show')->with('post', $post);
-      
+        return view('posts.show')->with([
+          
+            'post'=> $post
+        ]);;
     }
 
     /**
@@ -76,6 +95,7 @@ class PostController extends Controller
      */
     public function edit($id)
     {
+        $categories = Category::all();
        $post = Post::find($id);
         return view('posts.edit')->with('post', $post);
 
@@ -93,12 +113,14 @@ class PostController extends Controller
     {
           $this->validate($request, [
             'title' => 'required|string',
-            'body' => 'required|string'
+            'body' => 'required|string',
+            'cat_id' => 'required|integer'
         ]);
 
         $post = Post::find($id);
           $post->title = $request->input('title');
         $post->body = $request->input('body');
+        $post->cat_id =$request->input('cat_id');
         $post->save();
          return redirect()->route('posts.index');
     }

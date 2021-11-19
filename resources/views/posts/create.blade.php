@@ -13,6 +13,14 @@
             @endif
         </div>
         <div class="form-group">
+             <select class="form-control" name="cat_id">
+                 <option value="" disabled>Select Category</option>
+                @foreach($categories as $cateogry)
+                <option value="{{$cateogry->id}}">{{$cateogry->name}}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="form-group">
             <label for="body">Body</label>
             <textarea name="body" cols="30" rows="10" class="form-control">
             </textarea>

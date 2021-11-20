@@ -8,17 +8,20 @@
 <small>Written on {{$post->created_at}}</small>
     
       </div>
+      @if(!Auth::guest())
+        @if(Auth::user()->id == $post->user_id)
       <div class="col-1">
              <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-secondary">Edit</a>
       </div>
       <div class="col-1">
-            <form action="{{ route('posts.destroy', $post->id) }}" method="POST">
-                  @csrf
-            <input type="hidden" name="_method" value="DELETE">
-              <input type="submit" value="Delete" class="btn btn-danger">
-            
-              </form>
+            {!!Form::open(['route' => ['posts.destroy', $post->id], 'method' => 'POST', 'class' => 'pull-right'])!!}
+              {{Form::hidden('_method', 'DELETE')}}
+              {{Form::submit('Delete', ['class' => 'btn btn-danger'])}}
+            {!!Form::close()!!}
+  </form>
       </div>
+        @endif
+    @endif
              
       </div>
   </div>

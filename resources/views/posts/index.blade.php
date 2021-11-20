@@ -26,12 +26,19 @@
         </div>
     </div>
     </div>
+    
     @if($posts->count() > 0)
-        @foreach($posts as $post)
-            <div class="card m-1">
-                <div class="card-header">
-                  <p class="card-title"><a href={{route('posts.show',  $post->id)}} ">{{ $post->title }}</a></p>
-                  <small>
+     @foreach($posts as $post)
+            <div class="card my-3">
+            
+                <div class="row py-2 ">
+                    <div class="col-4">
+                        <img style="width:100%" src="./storage/cover_images/{{$post->cover_image}}">
+                    </div>
+                    <div class="col-8 ">
+                        <div class="container align-middle">
+                        <h3 clas><a href="/posts/{{$post->id}}">{{$post->title}}</a></h3>
+                          <small>
                        @for ($i = 0; $i < $categories->count(); $i++)
                     @if ($categories[$i]->id == $post->cat_id)
                         
@@ -40,20 +47,15 @@
                         
                     @endfor
                       </small>  
-
-                </div>
-                <div class="card-body">
-                   
-                   
-                  
-                    {{ $post->body }}
-
+                      <br>
+                        <small>Written on {{$post->created_at}} by {{$post->user->name}}</small>
+                        </div>
                     </div>
-
+                </div>
             </div>
-
         @endforeach
-    
+       
+        
     @else
         <div class="card card-body m-1">
             <h4>No Post Found</h4>

@@ -3,31 +3,26 @@
 @section('content')
 <div class="container">
     <h1>Edit post</h1>
+     {!! Form::open(['action' => ['PostsController@update', $post->id], 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
+        <div class="form-group">
+            {{Form::label('title', 'Title')}}
+            {{Form::text('title', $post->title, ['class' => 'form-control', 'placeholder' => 'Title'])}}
+        </div>
+         <div class="form-group">
+            {{ Form::select('cat_id', $categories->pluck('name', 'id'), null, ['class' => 'form-control w-100','placeholder' => 'Pick a category...' ])}} 
+        </div>
+       <div class="form-group">
+            {{Form::label('body', 'Body')}}
+            {{Form::textarea('body', '', ['id' => 'wysiwyg-editor', 'class' => 'form-control ckeditor ', 'placeholder' => 'Body Text'])}}
+        </div>
+        <div class="form-group">
+            {{Form::file('cover_image')}}
+        </div>
+        {{Form::hidden('_method','PUT')}}
+        {{Form::submit('Submit', ['class'=>'btn btn-primary'])}}
+    {!! Form::close() !!}
 
-    <form action="{{ route('posts.update', $post->id) }}" method="POST">
-        <div class="form-group">
-            <label for="title">Title</label>
-            <input type="text" class="form-control" name="title" value="{{$post->title}}">
-            @if($errors->has('title'))
-                <p class="text-danger">title field is required</p>
-            @endif
-        </div>
-        <div class="form-group">
-            <label for="body">Body</label>
-          
-            <textarea name="body" cols="30" rows="10" class="form-control" >
-                {{$post->body}}
-            </textarea>
-             @if($errors->has('body'))
-                <p class="text-danger">body field is required</p>
-            @endif
-        </div>
-        <div class="form-group">
-            @csrf
-            <input type="hidden" name="_method" value="PUT">
-            <input type="submit" value="Submit" class="btn btn-primary">
-        </div>
-    </form>
+ 
 </div>
 
 @endsection

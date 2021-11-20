@@ -38,6 +38,7 @@
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
+                         
                         <!-- Authentication Links -->
                         @guest
                             @if (Route::has('login'))
@@ -52,7 +53,9 @@
                                 </li>
                             @endif
                         @else
+                         
                             <li class="nav-item dropdown">
+                                
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}
                                 </a>
@@ -76,8 +79,21 @@
         </nav>
 
         <main class="py-4">
+            @include('inc.messages')
             @yield('content')
         </main>
     </div>
+    <script src="//cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.ckeditor').ckeditor();
+    });
+</script>
+<script type="text/javascript">
+    CKEDITOR.replace('wysiwyg-editor', {
+        filebrowserUploadUrl: "{{route('ckeditor.image-upload', ['_token' => csrf_token() ])}}",
+        filebrowserUploadMethod: 'form'
+    });
+</script>
 </body>
 </html>

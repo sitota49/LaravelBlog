@@ -26,3 +26,5 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::resource('posts', PostController::class);
 
 Route::resource('categories', CategoryController::class);
+
+Route::post('ckeditor/upload', 'CKEditorController@upload')->name('ckeditor.image-upload');

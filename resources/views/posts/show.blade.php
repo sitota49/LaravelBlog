@@ -5,6 +5,8 @@
 <h1>{{$post->title}}</h1>
   <div class="row">
       <div class="col-8">
+        <small>Number of views: {{$views}}</small><br>
+        
 <small>Written on {{$post->created_at}}</small>
     
       </div>

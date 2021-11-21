@@ -37,7 +37,7 @@
                     </div>
                     <div class="col-8 ">
                         <div class="container align-middle">
-                        <h3 clas><a href="/posts/{{$post->id}}">{{$post->title}}</a></h3>
+                        <h3 clas><a href="{{route('posts.show', $post->id) }}">{{$post->title}}</a></h3>
                           <small>
                        @for ($i = 0; $i < $categories->count(); $i++)
                     @if ($categories[$i]->id == $post->cat_id)

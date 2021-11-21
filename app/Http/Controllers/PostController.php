@@ -104,10 +104,11 @@ class PostController extends Controller
      */
     public function show($id)
     {
-      
+        
         $post = Post::find($id);
+        views($post)->record();
         return view('posts.show')->with([
-          
+            'views'=> views($post)->count(),
             'post'=> $post
         ]);;
     }

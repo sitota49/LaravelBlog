@@ -48,7 +48,9 @@
                       </small>  
                       <br>
                         <small>Written on {{$post->created_at}} by {{$post->user->name}}</small>
-                        </div>
+                        <br>
+                        <small>Number of Views: {{views($post)->count()}}</small>   
+                    </div>
                     </div>
                 </div>
             </div>

@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\Category;
@@ -32,7 +32,8 @@ class PostController extends Controller
                 
         return view('posts.index')->with([
             'posts' => $posts,
-            'categories' => $categories
+            'categories' => $categories,
+          
         ]);
     }
 
@@ -122,13 +123,19 @@ class PostController extends Controller
     public function edit($id)
     {
 
-        if(auth()->user()->id !==$post->user_id){
+         $post = Post::find($id);
+
+        if(auth()->user()->id !== $post->user_id){
             return redirect('/posts')->with('error', 'Unauthorized Page');
         }
 
         $categories = Category::all();
-       $post = Post::find($id);
-        return view('posts.edit')->with('post', $post);
+
+        return view('posts.edit')->
+        with([
+            'categories'=> $categories,
+            'post'=> $post
+        ]);
 
 
     }
@@ -142,11 +149,14 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
+
           $this->validate($request, [
             'title' => 'required|string',
             'body' => 'required|string',
             'cat_id' => 'required|integer'
         ]);
+
+                $post = Post::find($id);
 
         if($request->hasFile('cover_image')){
             // Get filename with the extension
@@ -162,7 +172,7 @@ class PostController extends Controller
             // Delete file if exists
             Storage::delete('public/cover_images/'.$post->cover_image);
         }
-        $post = Post::find($id);
+
           $post->title = $request->input('title');
         $post->body = $request->input('body');
         $post->cat_id =$request->input('cat_id');
@@ -181,6 +191,7 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
+        $post = Post::find($id);
       if(auth()->user()->id !==$post->user_id){
             return redirect('/posts')->with('error', 'Unauthorized Page');
         }
@@ -189,7 +200,7 @@ class PostController extends Controller
             // Delete Image
             Storage::delete('public/cover_images/'.$post->cover_image);
         }
-         $post = Post::find($id);
+         
            $post->delete();
         return redirect()->route('posts.index')->with('success', 'Post Removed');;
     }

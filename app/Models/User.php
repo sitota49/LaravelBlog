@@ -6,7 +6,9 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\UserRole;
 use Laravel\Sanctum\HasApiTokens;
+
 
 class User extends Authenticatable
 {
@@ -42,7 +44,32 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function hasRole($roleName)
+    {
+        $hasRole = false;
+        $userRoles = auth()->user()->userRoles()->with('role')->get();
+        foreach($userRoles as $userRole)
+        {
+            if($userRole->role->name == $roleName)
+            {
+                $hasRole = true;
+            }
+        }
+
+        return $hasRole;
+    }
+
     public function posts(){
         return $this->hasMany(Post::class, 'user_id');
+    }
+
+    /**
+     * Get all of the userRoles for the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function userRoles()
+    {
+        return $this->hasMany(UserRole::class, 'user_id', 'id');
     }
 }

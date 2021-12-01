@@ -17,9 +17,16 @@ use App\Http\Controllers\ApiController;
 Route::get('/posts', [ApiController::class, 'index']);
 Route::get('/posts/{id}', [ApiController::class, 'show']);
 Route::get('/posts/search/{title}', [ApiController::class, 'search']);
-Route::get('/posts/searchByCategory/{cat_id}', [ApiController::class, 'searchByCategory']);
-Route::get('/categories', [ApiController::class, 'allCategories']);
+// Route::get('/posts/searchByCategory/{cat_id}', [ApiController::class, 'searchByCategory']);
+// Route::get('/categories', [ApiController::class, 'allCategories']);
 Route::get('/categories/{id}', [ApiController::class, 'findCategoryById']);
+
+// Protected routes
+Route::group(['middleware'=>'auth:sanctum'], function () {
+    Route::get('/categories', [ApiController::class, 'allCategories']);
+ Route::get('/posts/searchByCategory/{cat_id}', [ApiController::class, 'searchByCategory']);
+
+});
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

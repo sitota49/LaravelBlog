@@ -26,6 +26,12 @@ class HomeController extends Controller
      */
      public function index()
     {
+        // dd(auth()->user()->userRoles()->with(['role', 'user'])->get());
+        // if(auth()->user()->hasRole("Super Admin")) {
+        //     dd("This user is super admin");
+        // } else {
+        //     dd("This user is not");
+        // }
         $categories = Category::all();
         $user_id = auth()->user()->id;
         $user = User::find($user_id);

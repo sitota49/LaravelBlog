@@ -64,5 +64,8 @@ class ApiAuthController extends Controller
         return [
             'message' => 'Logged out'
         ];
+
+      
+
     }
 }

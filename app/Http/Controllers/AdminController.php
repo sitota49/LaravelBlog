@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Post;
+use App\Models\User;
+use App\Models\Category;
 
 class AdminController extends Controller
 {
@@ -19,7 +22,16 @@ class AdminController extends Controller
     
     public function index()
     {
-        return view('admin.dashboard');
+         
+        
+        $categories = Category::all();
+        $posts = Post::all();
+        return view('admin.dashboard')->with([
+            'categories' => $categories,
+            'posts'=> $posts
+        ]);
+    
+
     }
 
     /**

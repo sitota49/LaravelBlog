@@ -27,7 +27,7 @@ class PostController extends Controller
     public function index()
     {
         
-         $categories = Category::all();
+        $categories = Category::all();
         $user_id = auth()->user()->id;
         $user = User::find($user_id);
         return view('posts.index')->with([
@@ -36,9 +36,7 @@ class PostController extends Controller
         ]);
     }
 
-   
-
-
+  
     /**
      * Show the form for creating a new resource.
      *

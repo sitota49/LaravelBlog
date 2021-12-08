@@ -3,26 +3,23 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Category;
-class CategoryController extends Controller
+
+class AdminController extends Controller
 {
-        public function __construct()
-    {
-        $this->middleware('isAdmin');
-    }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct()
+    {
+        $this->middleware('isAdmin');
+    }
+    
     public function index()
     {
-        
-         $categories = Category::orderBy('created_at')->get();
-
-        return view('categories.index')->with([
-            'categories' => $categories
-        ]);
+        return view('admin.dashboard');
     }
 
     /**
@@ -32,7 +29,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-       return view('categories.create');
+        //
     }
 
     /**
@@ -43,17 +40,7 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'name' => 'required|string',
-            'description' => 'required|string'
-        ]);
-
-         $cateogry = new Category;
-        $cateogry->name = $request->input('name');
-        $cateogry->description = $request->input('description');
-        $cateogry->save();
-
-        return redirect()->route('categories.index');
+        //
     }
 
     /**

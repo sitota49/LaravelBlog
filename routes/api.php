@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ApiController;
+use App\Http\Controllers\ApiAuthController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -14,20 +15,29 @@ use App\Http\Controllers\ApiController;
 |
 */
 
-Route::get('/posts', [ApiController::class, 'index']);
+Route::post('/register', [ApiAuthController::class, 'register']);
+Route::post('/login', [ApiAuthController::class, 'login']);
+
+// Route::get('/posts', [ApiController::class, 'index']);
 Route::get('/posts/{id}', [ApiController::class, 'show']);
 Route::get('/posts/search/{title}', [ApiController::class, 'search']);
-// Route::get('/posts/searchByCategory/{cat_id}', [ApiController::class, 'searchByCategory']);
-// Route::get('/categories', [ApiController::class, 'allCategories']);
+Route::get('/posts/searchByCategory/{cat_id}', [ApiController::class, 'searchByCategory']);
+Route::get('/categories', [ApiController::class, 'allCategories']);
 Route::get('/categories/{id}', [ApiController::class, 'findCategoryById']);
 
 // Protected routes
-Route::group(['middleware'=>'auth:sanctum'], function () {
-    Route::get('/categories', [ApiController::class, 'allCategories']);
- Route::get('/posts/searchByCategory/{cat_id}', [ApiController::class, 'searchByCategory']);
+Route::group(['middleware' => ['auth:sanctum']], function () {
+
+    // Route::post('/posts', [ApiController::class, 'store']);
+    // Route::put('/posts/{id}', [ApiController::class, 'update']);
+    // Route::delete('/posts/{id}', [ApiController::class, 'destroy']);
+    Route::get('/posts', [ApiController::class, 'index']);
+    Route::post('/logout', [ApiController::class, 'logout']);
 
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+

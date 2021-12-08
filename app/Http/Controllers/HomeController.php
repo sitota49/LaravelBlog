@@ -16,7 +16,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        // $this->middleware('auth');
     }
 
     /**
@@ -24,7 +24,7 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-     public function index()
+     public function index(Request $request)
     {
         // dd(auth()->user()->userRoles()->with(['role', 'user'])->get());
         // if(auth()->user()->hasRole("Super Admin")) {
@@ -32,12 +32,20 @@ class HomeController extends Controller
         // } else {
         //     dd("This user is not");
         // }
-        $categories = Category::all();
-        $user_id = auth()->user()->id;
-        $user = User::find($user_id);
+      
+
+         $categories = Category::all();
+        if($request->has('q')){
+    		$q=$request->q;
+    		$posts=Post::where('cat_id','like','%'.$q.'%')->orderBy('created_at')->get();
+    	}else{
+    		$posts = Post::orderBy('created_at')->get();
+    	}
+                
         return view('home')->with([
+            'posts' => $posts,
             'categories' => $categories,
-            'posts'=> $user->posts
+          
         ]);
     }
 }

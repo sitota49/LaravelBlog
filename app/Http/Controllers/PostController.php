@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use App\Models\Post;
+use App\Models\User;
 use App\Models\Category;
 
 class PostController extends Controller
@@ -15,7 +16,7 @@ class PostController extends Controller
     // }
      public function __construct()
     {
-        $this->middleware('isAdmin');
+        $this->middleware('isAuthor') || $this->middleware('isAdmin');
     }
 
     /**
@@ -23,21 +24,15 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
         
-        $categories = Category::all();
-        if($request->has('q')){
-    		$q=$request->q;
-    		$posts=Post::where('cat_id','like','%'.$q.'%')->orderBy('created_at')->get();
-    	}else{
-    		$posts = Post::orderBy('created_at')->get();
-    	}
-                
+         $categories = Category::all();
+        $user_id = auth()->user()->id;
+        $user = User::find($user_id);
         return view('posts.index')->with([
-            'posts' => $posts,
             'categories' => $categories,
-          
+            'posts'=> $user->posts
         ]);
     }
 
